@@ -72,7 +72,7 @@ This endpoint returns a JSON object containing all the required statistics.
 2. Clone this repository.
 3. Create a .env file in the project root and set the POSTGRES_PASSWORD.
 4. Run docker-compose up --build to start the system.
-5. The API will be available at http://localhost:5001/aggregates.
+5. The API will be available at http://localhost:5001/aggregates after the ETL completes.
 
 ## Project Structure
 
