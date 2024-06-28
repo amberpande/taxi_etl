@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=nyc_taxi
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=nyc_taxi_data
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+
+  etl:
+    build: .
+    volumes:
+      - ./tmp_data:/tmp
+    environment:
+      - DATABASE_URL=postgresql://nyc_taxi:${POSTGRES_PASSWORD}@postgres:5432/nyc_taxi_data
+    depends_on:
+      - postgres
+    command: python etl/main.py
+
+  api:
+    build: .
+    command: python api/app.py
+    ports:
+      - "5001:5000"
+    environment:
+      - DATABASE_URL=postgresql://nyc_taxi:${POSTGRES_PASSWORD}@postgres:5432/nyc_taxi_data
+    depends_on:
+      - postgres
+      - etl
+
+volumes:
+  postgres_data:

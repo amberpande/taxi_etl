@@ -1,0 +1,8 @@
+# Ignore __pycache__ directory
+__pycache__/
+
+# Ignore .env file
+.env
+
+# Ignore tmp_data folder
+tmp_data/
